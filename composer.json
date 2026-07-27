@@ -3444,6 +3444,11 @@
                     "description": "Fix problem with payment reminder button",
                     "filename": "essential/mollie/magento2/fix-problem-with-payment-reminder-button.patch",
                     "version-constraint": ">=3.0.0"
+                },
+                {
+                    "description": "Fix for double cancelation (lock-based, rebased for Mollie 3.x)",
+                    "filename": "essential/mollie/magento2/fix-for-double-cancelation-v3.patch",
+                    "version-constraint": ">=3.0.0,<4.0.0"
                 }
             ],
             "magento/module-multiple-wishlist": [
@@ -3551,6 +3556,11 @@
                     "description": "Wrap script with renderer CSP",
                     "filename": "essential/magepal/magento2-googletagmanager/wrap_script_with_renderer_csp.patch",
                     "version-constraint": ">=2.7.8,<3.0.0"
+                },
+                {
+                    "description": "Guard empty data layer against CSP renderTag crash in html-header mode",
+                    "filename": "essential/magepal/magento2-googletagmanager/guard-empty-datalayer-csp-render.patch",
+                    "version-constraint": ">=3.0.0,<4.0.0"
                 }
             ],
             "cleverzoeger/ext-magento2-cleverzoeger-paqato": [
@@ -4075,6 +4085,13 @@
                     "description": "Fix GLS croatia shipping module ParcelStatusPlugin to pass gdpr integration tests",
                     "filename": "essential/gls-croatia/module-shipping/fix-gls-croatia-ParcelStatusPlugin-isAllowed-P2G-2742.patch",
                     "version-constraint": ">=1.3.0"
+                }
+            ],
+            "cinovo/buyorder": [
+                {
+                    "description": "Remove customer-session login guard from getContactPaymentConnections so it works in the admin panel and GraphQL; storefront guard restored via frontend around plugin in customization-proaurum-cinovo.",
+                    "filename": "essential/cinovo/buyorder/skip-session-check-in-admin.patch",
+                    "version-constraint": ">=2.6.9"
                 }
             ],
             "cinovo/calculation": [

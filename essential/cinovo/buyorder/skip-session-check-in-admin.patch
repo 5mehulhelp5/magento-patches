@@ -1,0 +1,36 @@
+Removes the customer-session login guard added at the top of
+Cinovo\Buyorder\Helper\BuyorderHelper::getContactPaymentConnections in
+cinovo/buyorder 2.6.9.
+
+Root cause: getContactPaymentConnections is shared between the storefront and
+the admin panel (e.g. Cinovo\Bankaccount\Controller\Adminhtml\Bankaccount\GetBankAccounts).
+The guard checks Magento\Customer\Model\Session::isLoggedIn(), which is never
+logged in in the adminhtml area, so the method always returns null and the
+admin bank-account lookup is broken.
+
+Fix: comment out the guard so the method works in every area again. The
+storefront-only "return null when the customer is not logged in" behaviour is
+restored via an around plugin scoped to the frontend area in
+creativestyle/customization-proaurum-cinovo
+(Plugin/Cinovo/Buyorder/Helper/BuyorderHelper/ReturnNullWhenCustomerNotLoggedIn),
+so the storefront contract is unchanged while the admin flow is fixed.
+
+diff --git a/Helper/BuyorderHelper.php b/Helper/BuyorderHelper.php
+index 4c3be05..9125f21 100644
+--- a/Helper/BuyorderHelper.php
++++ b/Helper/BuyorderHelper.php
+@@ -86,9 +86,11 @@ class BuyorderHelper extends AbstractHelper
+     public function getContactPaymentConnections($contactId, $currencySN = null, $refreshCache = false)
+     {
+
+-        if (!$this->sessionHelper->isLoggedIn()) {
+-            return null;
+-        }
++        // BEGIN PATCH
++        // if (!$this->sessionHelper->isLoggedIn()) {
++        //     return null;
++        // }
++        // END PATCH
+
+         if ($contactId) {
+             // try to retrieve from customer session

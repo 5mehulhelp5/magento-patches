@@ -1,9 +1,9 @@
 Optimizes the admin media gallery folder tree (Magento\MediaGalleryUi\Model\Directories\GetDirectoryTree),
 which on stores with a large pub/media tree never finishes loading, while still exposing the sub-directories
-of the configured allowed resources.
+of the configured allowed resources. Hidden entries (dot-prefixed folders/files) are skipped and not descended into.
 
 diff --git a/Model/Directories/GetDirectoryTree.php b/Model/Directories/GetDirectoryTree.php
-index bff9d98..dfc5c30 100644
+index bff9d98..1a2e727 100644
 --- a/Model/Directories/GetDirectoryTree.php
 +++ b/Model/Directories/GetDirectoryTree.php
 @@ -13,6 +13,7 @@ use Magento\Framework\App\ObjectManager;
@@ -29,7 +29,7 @@ index bff9d98..dfc5c30 100644
                      }
                  }
              }
-@@ -116,6 +113,28 @@ class GetDirectoryTree
+@@ -116,6 +113,31 @@ class GetDirectoryTree
          return $directories;
      }
 
@@ -47,6 +47,9 @@ index bff9d98..dfc5c30 100644
 +        ?string $path = null
 +    ): \Traversable {
 +        foreach ($imageDirectory->read($path) as $itemPath) {
++            if (str_starts_with(basename($itemPath), '.')) {
++                continue;
++            }
 +            if (!$imageDirectory->isDirectory($itemPath)) {
 +                continue;
 +            }

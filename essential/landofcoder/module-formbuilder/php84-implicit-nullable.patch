@@ -1,0 +1,340 @@
+diff a/Api/FormbuilderRepositoryInterface.php b/Api/FormbuilderRepositoryInterface.php
+--- a/Api/FormbuilderRepositoryInterface.php	2026-07-07 21:29:15.951002149 +0200
++++ b/Api/FormbuilderRepositoryInterface.php	2026-07-07 21:29:29.675002156 +0200
+@@ -151,7 +151,7 @@
+      * @throws \Magento\Framework\Exception\NoSuchEntityException
+      * @throws \Magento\Framework\Exception\LocalizedException
+      */
+-    public function getFormField(int $formId, int $customerGroupId = null, int $storeId = null);
++    public function getFormField(int $formId, ?int $customerGroupId = null, ?int $storeId = null);
+ 
+     /**
+      * GET Form form data with design fields by ID, identifier, customer_group_id, stores_id
+@@ -162,7 +162,7 @@
+      * @throws \Magento\Framework\Exception\NoSuchEntityException
+      * @throws \Magento\Framework\Exception\LocalizedException
+      */
+-    public function getFormDesign(int $formId, int $customerGroupId = null, int $storeId = null);
++    public function getFormDesign(int $formId, ?int $customerGroupId = null, ?int $storeId = null);
+ 
+     /**
+      * POST for send reply message api
+diff a/Model/Blacklist.php b/Model/Blacklist.php
+--- a/Model/Blacklist.php	2026-07-07 21:29:16.002002149 +0200
++++ b/Model/Blacklist.php	2026-07-07 21:29:29.686002156 +0200
+@@ -53,8 +53,8 @@
+     public function __construct(
+         \Magento\Framework\Model\Context $context,
+         \Magento\Framework\Registry $registry,
+-        \Lof\Formbuilder\Model\ResourceModel\Blacklist $resource = null,
+-        \Lof\Formbuilder\Model\ResourceModel\Blacklist\Collection $resourceCollection = null,
++        ?\Lof\Formbuilder\Model\ResourceModel\Blacklist $resource = null,
++        ?\Lof\Formbuilder\Model\ResourceModel\Blacklist\Collection $resourceCollection = null,
+         array $data = []
+     ) {
+         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
+diff a/Model/Form.php b/Model/Form.php
+--- a/Model/Form.php	2026-07-07 21:29:16.006002149 +0200
++++ b/Model/Form.php	2026-07-07 21:29:29.686002156 +0200
+@@ -128,8 +128,8 @@
+     public function __construct(
+         \Magento\Framework\Model\Context $context,
+         \Magento\Framework\Registry $registry,
+-        \Lof\Formbuilder\Model\ResourceModel\Form $resource = null,
+-        \Lof\Formbuilder\Model\ResourceModel\Form\Collection $resourceCollection = null,
++        ?\Lof\Formbuilder\Model\ResourceModel\Form $resource = null,
++        ?\Lof\Formbuilder\Model\ResourceModel\Form\Collection $resourceCollection = null,
+         \Magento\Store\Model\StoreManagerInterface $storeManager,
+         \Magento\Framework\UrlInterface $url,
+         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+diff a/Model/FormbuilderRepository.php b/Model/FormbuilderRepository.php
+--- a/Model/FormbuilderRepository.php	2026-07-07 21:29:16.006002149 +0200
++++ b/Model/FormbuilderRepository.php	2026-07-07 21:29:29.687002156 +0200
+@@ -514,7 +514,7 @@
+     /**
+      * @inheritdoc
+      */
+-    public function getFormField(int $formId, int $customerGroupId = null, int $storeId = null)
++    public function getFormField(int $formId, ?int $customerGroupId = null, ?int $storeId = null)
+     {
+         $result = [];
+         $connection = $this->resource->getConnection();
+@@ -553,7 +553,7 @@
+     /**
+      * @inheritdoc
+      */
+-    public function getFormDesign(int $formId, int $customerGroupId = null, int $storeId = null)
++    public function getFormDesign(int $formId, ?int $customerGroupId = null, ?int $storeId = null)
+     {
+         $designFields = [];
+ 
+diff a/Model/Message.php b/Model/Message.php
+--- a/Model/Message.php	2026-07-07 21:29:16.006002149 +0200
++++ b/Model/Message.php	2026-07-07 21:29:29.686002156 +0200
+@@ -59,8 +59,8 @@
+     public function __construct(
+         \Magento\Framework\Model\Context $context,
+         \Magento\Framework\Registry $registry,
+-        \Lof\Formbuilder\Model\ResourceModel\Message $resource = null,
+-        \Lof\Formbuilder\Model\ResourceModel\Message\Collection $resourceCollection = null,
++        ?\Lof\Formbuilder\Model\ResourceModel\Message $resource = null,
++        ?\Lof\Formbuilder\Model\ResourceModel\Message\Collection $resourceCollection = null,
+         \Lof\Formbuilder\Helper\Data $_formHelper,
+         array $data = []
+     ) {
+diff a/Model/Model.php b/Model/Model.php
+--- a/Model/Model.php	2026-07-07 21:29:16.007002149 +0200
++++ b/Model/Model.php	2026-07-07 21:29:29.686002156 +0200
+@@ -54,8 +54,8 @@
+     public function __construct(
+         \Magento\Framework\Model\Context $context,
+         \Magento\Framework\Registry $registry,
+-        \Lof\Formbuilder\Model\ResourceModel\Model $resource = null,
+-        \Lof\Formbuilder\Model\ResourceModel\Model\Collection $resourceCollection = null,
++        ?\Lof\Formbuilder\Model\ResourceModel\Model $resource = null,
++        ?\Lof\Formbuilder\Model\ResourceModel\Model\Collection $resourceCollection = null,
+         array $data = []
+     ) {
+         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
+diff a/Model/Modelcategory.php b/Model/Modelcategory.php
+--- a/Model/Modelcategory.php	2026-07-07 21:29:16.007002149 +0200
++++ b/Model/Modelcategory.php	2026-07-07 21:29:29.686002156 +0200
+@@ -54,8 +54,8 @@
+     public function __construct(
+         \Magento\Framework\Model\Context $context,
+         \Magento\Framework\Registry $registry,
+-        \Lof\Formbuilder\Model\ResourceModel\Model $resource = null,
+-        \Lof\Formbuilder\Model\ResourceModel\Model\Collection $resourceCollection = null,
++        ?\Lof\Formbuilder\Model\ResourceModel\Model $resource = null,
++        ?\Lof\Formbuilder\Model\ResourceModel\Model\Collection $resourceCollection = null,
+         array $data = []
+     ) {
+         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
+diff a/Model/Reply.php b/Model/Reply.php
+--- a/Model/Reply.php	2026-07-07 21:29:16.007002149 +0200
++++ b/Model/Reply.php	2026-07-07 21:29:29.683002156 +0200
+@@ -54,8 +54,8 @@
+     public function __construct(
+         \Magento\Framework\Model\Context $context,
+         \Magento\Framework\Registry $registry,
+-        \Lof\Formbuilder\Model\ResourceModel\Reply $resource = null,
+-        \Lof\Formbuilder\Model\ResourceModel\Reply\Collection $resourceCollection = null,
++        ?\Lof\Formbuilder\Model\ResourceModel\Reply $resource = null,
++        ?\Lof\Formbuilder\Model\ResourceModel\Reply\Collection $resourceCollection = null,
+         array $data = []
+     ) {
+         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
+diff a/Model/ResourceModel/AbstractCollection.php b/Model/ResourceModel/AbstractCollection.php
+--- a/Model/ResourceModel/AbstractCollection.php	2026-07-07 21:29:16.008002149 +0200
++++ b/Model/ResourceModel/AbstractCollection.php	2026-07-07 21:29:29.688002156 +0200
+@@ -46,8 +46,8 @@
+         \Magento\Framework\Data\Collection\Db\FetchStrategyInterface $fetchStrategy,
+         \Magento\Framework\Event\ManagerInterface $eventManager,
+         \Magento\Store\Model\StoreManagerInterface $storeManager,
+-        \Magento\Framework\DB\Adapter\AdapterInterface $connection = null,
+-        \Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
++        ?\Magento\Framework\DB\Adapter\AdapterInterface $connection = null,
++        ?\Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
+     ) {
+         parent::__construct($entityFactory, $logger, $fetchStrategy, $eventManager, $connection, $resource);
+         $this->storeManager = $storeManager;
+diff a/Model/ResourceModel/Blacklist/Grid/Collection.php b/Model/ResourceModel/Blacklist/Grid/Collection.php
+--- a/Model/ResourceModel/Blacklist/Grid/Collection.php	2026-07-07 21:29:16.009002149 +0200
++++ b/Model/ResourceModel/Blacklist/Grid/Collection.php	2026-07-07 21:29:29.688002156 +0200
+@@ -59,7 +59,7 @@
+         $resourceModel,
+         $model = 'Magento\Framework\View\Element\UiComponent\DataProvider\Document',
+         $connection = null,
+-        \Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
++        ?\Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
+     ) {
+         parent::__construct(
+             $entityFactory,
+@@ -124,7 +124,7 @@
+      * @return $this
+      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+      */
+-    public function setSearchCriteria(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
++    public function setSearchCriteria(?\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
+     {
+         return $this;
+     }
+@@ -158,7 +158,7 @@
+      * @return $this
+      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+      */
+-    public function setItems(array $items = null)
++    public function setItems(?array $items = null)
+     {
+         return $this;
+     }
+diff a/Model/ResourceModel/Form/Grid/Collection.php b/Model/ResourceModel/Form/Grid/Collection.php
+--- a/Model/ResourceModel/Form/Grid/Collection.php	2026-07-07 21:29:16.011002149 +0200
++++ b/Model/ResourceModel/Form/Grid/Collection.php	2026-07-07 21:29:29.689002156 +0200
+@@ -59,7 +59,7 @@
+         $resourceModel,
+         $model = 'Magento\Framework\View\Element\UiComponent\DataProvider\Document',
+         $connection = null,
+-        \Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
++        ?\Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
+     ) {
+         parent::__construct(
+             $entityFactory,
+@@ -124,7 +124,7 @@
+      * @return $this
+      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+      */
+-    public function setSearchCriteria(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
++    public function setSearchCriteria(?\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
+     {
+         return $this;
+     }
+@@ -158,7 +158,7 @@
+      * @return $this
+      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+      */
+-    public function setItems(array $items = null)
++    public function setItems(?array $items = null)
+     {
+         return $this;
+     }
+diff a/Model/ResourceModel/Message/Grid/Collection.php b/Model/ResourceModel/Message/Grid/Collection.php
+--- a/Model/ResourceModel/Message/Grid/Collection.php	2026-07-07 21:29:16.014002149 +0200
++++ b/Model/ResourceModel/Message/Grid/Collection.php	2026-07-07 21:29:29.688002156 +0200
+@@ -58,7 +58,7 @@
+         $resourceModel,
+         $model = 'Magento\Framework\View\Element\UiComponent\DataProvider\Document',
+         $connection = null,
+-        \Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
++        ?\Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
+     ) {
+         parent::__construct(
+             $entityFactory,
+@@ -141,7 +141,7 @@
+      * @return $this
+      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+      */
+-    public function setSearchCriteria(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
++    public function setSearchCriteria(?\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
+     {
+         return $this;
+     }
+@@ -175,7 +175,7 @@
+      * @return $this
+      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+      */
+-    public function setItems(array $items = null)
++    public function setItems(?array $items = null)
+     {
+         return $this;
+     }
+diff a/Model/ResourceModel/Model/Grid/Collection.php b/Model/ResourceModel/Model/Grid/Collection.php
+--- a/Model/ResourceModel/Model/Grid/Collection.php	2026-07-07 21:29:16.016002149 +0200
++++ b/Model/ResourceModel/Model/Grid/Collection.php	2026-07-07 21:29:29.689002156 +0200
+@@ -58,7 +58,7 @@
+         $resourceModel,
+         $model = 'Magento\Framework\View\Element\UiComponent\DataProvider\Document',
+         $connection = null,
+-        \Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
++        ?\Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
+     ) {
+         parent::__construct(
+             $entityFactory,
+@@ -123,7 +123,7 @@
+      * @return $this
+      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+      */
+-    public function setSearchCriteria(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
++    public function setSearchCriteria(?\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
+     {
+         return $this;
+     }
+@@ -157,7 +157,7 @@
+      * @return $this
+      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+      */
+-    public function setItems(array $items = null)
++    public function setItems(?array $items = null)
+     {
+         return $this;
+     }
+diff a/Model/ResourceModel/Modelcategory/Grid/Collection.php b/Model/ResourceModel/Modelcategory/Grid/Collection.php
+--- a/Model/ResourceModel/Modelcategory/Grid/Collection.php	2026-07-07 21:29:16.017002149 +0200
++++ b/Model/ResourceModel/Modelcategory/Grid/Collection.php	2026-07-07 21:29:29.688002156 +0200
+@@ -59,7 +59,7 @@
+         $resourceModel,
+         $model = 'Magento\Framework\View\Element\UiComponent\DataProvider\Document',
+         $connection = null,
+-        \Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
++        ?\Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
+     ) {
+         parent::__construct(
+             $entityFactory,
+@@ -124,7 +124,7 @@
+      * @return $this
+      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+      */
+-    public function setSearchCriteria(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
++    public function setSearchCriteria(?\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
+     {
+         return $this;
+     }
+@@ -158,7 +158,7 @@
+      * @return $this
+      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+      */
+-    public function setItems(array $items = null)
++    public function setItems(?array $items = null)
+     {
+         return $this;
+     }
+diff a/Model/ResourceModel/Reply/Grid/Collection.php b/Model/ResourceModel/Reply/Grid/Collection.php
+--- a/Model/ResourceModel/Reply/Grid/Collection.php	2026-07-07 21:29:16.019002149 +0200
++++ b/Model/ResourceModel/Reply/Grid/Collection.php	2026-07-07 21:29:29.688002156 +0200
+@@ -58,7 +58,7 @@
+         $resourceModel,
+         $model = 'Magento\Framework\View\Element\UiComponent\DataProvider\Document',
+         $connection = null,
+-        \Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
++        ?\Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
+     ) {
+         parent::__construct(
+             $entityFactory,
+@@ -123,7 +123,7 @@
+      * @return $this
+      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+      */
+-    public function setSearchCriteria(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
++    public function setSearchCriteria(?\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
+     {
+         return $this;
+     }
+@@ -157,7 +157,7 @@
+      * @return $this
+      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+      */
+-    public function setItems(array $items = null)
++    public function setItems(?array $items = null)
+     {
+         return $this;
+     }
+diff a/Model/TransportBuilder.php b/Model/TransportBuilder.php
+--- a/Model/TransportBuilder.php	2026-07-07 21:29:16.019002149 +0200
++++ b/Model/TransportBuilder.php	2026-07-07 21:29:29.684002156 +0200
+@@ -136,11 +136,11 @@
+         TransportInterfaceFactory $mailTransportFactory,
+         MimePartFactory $mimePartFactory,
+         MimeMessageFactory $mimeMessageFactory,
+-        MessageInterfaceFactory $messageFactory = null,
+-        EmailMessageInterfaceFactory $emailMessageInterfaceFactory = null,
+-        MimeMessageInterfaceFactory $mimeMessageInterfaceFactory = null,
+-        MimePartInterfaceFactory $mimePartInterfaceFactory = null,
+-        AddressConverter $addressConverter = null
++        ?MessageInterfaceFactory $messageFactory = null,
++        ?EmailMessageInterfaceFactory $emailMessageInterfaceFactory = null,
++        ?MimeMessageInterfaceFactory $mimeMessageInterfaceFactory = null,
++        ?MimePartInterfaceFactory $mimePartInterfaceFactory = null,
++        ?AddressConverter $addressConverter = null
+     ) {
+         parent::__construct(
+             $templateFactory,

@@ -1,0 +1,20 @@
+diff --git a/View/Layout.php b/View/Layout.php
+--- a/View/Layout.php	2026-07-12 15:58:05.168004287 +0200
++++ b/View/Layout.php	2026-07-12 15:58:05.187004287 +0200
+@@ -385,9 +385,13 @@
+ 
+         \Magento\Framework\Profiler::start('generate_elements');
+ 
+-        $isolatedReaderContext = $this->createIsolatedReaderContext();
+-
+-        $this->generatorPool->process($isolatedReaderContext, $generatorContext);
++        // PATCH BEGIN [ZJ-753] Revert isolated reader context: generator must consume the original
++        // reader context, otherwise scheduled structure diverges on full page rendering and
++        // referenceBlock children (e.g. sales order item renderers) are lost.
++        // $isolatedReaderContext = $this->createIsolatedReaderContext();
++        // $this->generatorPool->process($isolatedReaderContext, $generatorContext);
++        $this->generatorPool->process($this->getReaderContext(), $generatorContext);
++        // PATCH END
+         \Magento\Framework\Profiler::stop('generate_elements');
+ 
+         $this->addToOutputRootContainers();

@@ -57,6 +57,11 @@
                     "version-constraint": ">=103.0.8,<103.0.9"
                 },
                 {
+                    "description": "Revert isolated reader context in layout generation - scheduled structure diverges on full page rendering and referenceBlock children are lost (ZJ-753, Magento 2.4.9 regression)",
+                    "filename": "essential/magento/framework/revert-isolated-reader-context-in-layout-generation.patch",
+                    "version-constraint": ">=103.0.9"
+                },
+                {
                     "description": "Fix customer grid EAV indexing",
                     "filename": "essential/magento/framework/m21-customer-grid-indexing-fix.patch",
                     "version-constraint": "100.1.*"
@@ -1323,6 +1328,13 @@
                     "description": "Add translation for the order cancellation modal title (FZ-741)",
                     "filename": "essential/magento/module-order-cancellation-ui/translate-order-cancellation-modal-title.patch",
                     "version-constraint": ">=100.4.0-p4, <100.4.2"
+                }
+            ],
+            "magento/module-catalog-import-export": [
+                {
+                    "description": "Prevent AbstractType destructor from clearing static attribute caches mid-import, magento/magento2#39585 (RKL-1130); fixed upstream in 101.1.9 (Magento 2.4.9)",
+                    "filename": "essential/magento/module-catalog-import-export/prevent-destructor-from-clearing-static-attribute-caches.patch",
+                    "version-constraint": ">=101.1.8, <101.1.9"
                 }
             ],
             "magento/module-catalog-inventory": [
@@ -2812,6 +2824,11 @@
                     "description": "Fix for canceling orders ASD-1291 (DOG-2159)",
                     "filename": "essential/amzn/amazon-pay-magento-2-module/fix-for-wrong-processing-status-during-cancelation.patch",
                     "version-constraint": "=5.18.3"
+                },
+                {
+                    "description": "Add php-8.4 adjustmnets to the cli commands",
+                    "filename": "essential/amzn/amazon-pay-magento-2-module/add-php-8.4-adjustmnets-to-the-cli-commands.patch",
+                    "version-constraint": ">=5.18.4"
                 }
             ],
             "msp/adminrestriction": [
@@ -3292,6 +3309,21 @@
             ],
             "wyomind/datafeedmanager": [
                 {
+                    "description": "Add int return type to Command::execute() for symfony/console 7 compatibility (Magento 2.4.9)",
+                    "filename": "essential/wyomind/datafeedmanager/symfony7-execute-return-type.patch",
+                    "version-constraint": ">=13.0.0, <14.0.0"
+                },
+                {
+                    "description": "Add explicit nullable types to implicitly nullable parameters (PHP 8.4 deprecation)",
+                    "filename": "essential/wyomind/datafeedmanager/php84-implicit-nullable.patch",
+                    "version-constraint": ">=13.0.0, <14.0.0"
+                },
+                {
+                    "description": "Add int return type to Command::execute() for symfony/console 7 compatibility (Magento 2.4.9) - rebased for 14.1.x (still not fixed upstream, only code formatting changed)",
+                    "filename": "essential/wyomind/datafeedmanager/symfony7-execute-return-type-141plus.patch",
+                    "version-constraint": ">=14.1.0"
+                },
+                {
                     "description": "Fix array to string conversion error",
                     "filename": "essential/wyomind/datafeedmanager/fix-array-to-string-conversion-error.patch",
                     "version-constraint": ">=11.22.1,<11.23.0"
@@ -3304,7 +3336,12 @@
                 {
                     "description": "Fix for feed configuration revert issue by cron process",
                     "filename": "essential/wyomind/datafeedmanager/wyomind-datafeedmanager-fix-config-revert-issue-14plus.patch",
-                    "version-constraint": ">=14.0.6"
+                    "version-constraint": ">=14.0.6,<14.1.0"
+                },
+                {
+                    "description": "Fix for feed configuration revert issue by cron process - rebased for 14.1.x (surrounding file publication code rewritten upstream)",
+                    "filename": "essential/wyomind/datafeedmanager/wyomind-datafeedmanager-fix-config-revert-issue-141plus.patch",
+                    "version-constraint": ">=14.1.0"
                 },
                 {
                     "description": "Fix for feed configuration revert issue by cron process",
@@ -3334,7 +3371,12 @@
                 {
                     "description": "After update to PHP 81, string to int value 0 comparison no longer return true. To fix it the if statement has been extend",
                     "filename": "essential/wyomind/datafeedmanager/wyomind-datafeedmanager-php-81.patch",
-                    "version-constraint": ">=11.23.0"
+                    "version-constraint": ">=11.23.0, <14.1.0"
+                },
+                {
+                    "description": "After update to PHP 81, string to int value 0 comparison no longer return true. To fix it the if statement has been extend - rebased for 14.1.x (elseif restructured into else/if upstream)",
+                    "filename": "essential/wyomind/datafeedmanager/wyomind-datafeedmanager-php-81-141plus.patch",
+                    "version-constraint": ">=14.1.0"
                 },
                 {
                     "description": "Category filter optimization",
@@ -4035,6 +4077,37 @@
                     "description": "Disable sales order grid plugin",
                     "filename": "essential/meta/module-sales/disable-sales-order-grid-plugin.patch",
                     "version-constraint": ">=1.6.4"
+                }
+            ],
+            "ecomteck/module-advanced-contact": [
+                {
+                    "description": "Add explicit nullable type to implicitly nullable parameter (PHP 8.4 deprecation)",
+                    "filename": "essential/ecomteck/module-advanced-contact/php84-implicit-nullable.patch",
+                    "version-constraint": ">=1.0.1"
+                }
+            ],
+            "akeneo/module-magento2-connector-community": [
+                {
+                    "description": "Add int return type to Command::execute() for symfony/console 7 compatibility (Magento 2.4.9)",
+                    "filename": "essential/akeneo/module-magento2-connector-community/symfony7-execute-return-type.patch",
+                    "version-constraint": ">=105.1.2"
+                }
+            ],
+            "landofcoder/module-formbuilder": [
+                {
+                    "description": "Add explicit nullable types to implicitly nullable parameters (PHP 8.4 deprecation)",
+                    "filename": "essential/landofcoder/module-formbuilder/php84-implicit-nullable.patch",
+                    "version-constraint": ">=1.1.7"
+                },
+                {
+                    "description": "Make optional $resource/$resourceCollection required-nullable to fix optional-before-required deprecation (PHP 8.x)",
+                    "filename": "essential/landofcoder/module-formbuilder/php84-optional-before-required.patch",
+                    "version-constraint": ">=1.1.7"
+                },
+                {
+                    "description": "Remove dead preference for non-existent FormbuilderManagement classes (breaks setup:di:compile on Magento 2.4.9)",
+                    "filename": "essential/landofcoder/module-formbuilder/remove-dead-formbuildermanagement-preference.patch",
+                    "version-constraint": ">=1.1.7"
                 }
             ],
             "akeneo/magento2-connector-enterprise": [

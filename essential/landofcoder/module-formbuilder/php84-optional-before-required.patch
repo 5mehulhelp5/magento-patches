@@ -1,0 +1,28 @@
+diff --git a/Model/Form.php b/Model/Form.php
+--- a/Model/Form.php	2026-07-11 17:18:22.677005214 +0200
++++ b/Model/Form.php	2026-07-11 17:18:22.689005214 +0200
+@@ -128,8 +128,8 @@
+     public function __construct(
+         \Magento\Framework\Model\Context $context,
+         \Magento\Framework\Registry $registry,
+-        ?\Lof\Formbuilder\Model\ResourceModel\Form $resource = null,
+-        ?\Lof\Formbuilder\Model\ResourceModel\Form\Collection $resourceCollection = null,
++        ?\Lof\Formbuilder\Model\ResourceModel\Form $resource,
++        ?\Lof\Formbuilder\Model\ResourceModel\Form\Collection $resourceCollection,
+         \Magento\Store\Model\StoreManagerInterface $storeManager,
+         \Magento\Framework\UrlInterface $url,
+         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+diff --git a/Model/Message.php b/Model/Message.php
+--- a/Model/Message.php	2026-07-11 17:18:22.677005214 +0200
++++ b/Model/Message.php	2026-07-11 17:18:22.689005214 +0200
+@@ -59,8 +59,8 @@
+     public function __construct(
+         \Magento\Framework\Model\Context $context,
+         \Magento\Framework\Registry $registry,
+-        ?\Lof\Formbuilder\Model\ResourceModel\Message $resource = null,
+-        ?\Lof\Formbuilder\Model\ResourceModel\Message\Collection $resourceCollection = null,
++        ?\Lof\Formbuilder\Model\ResourceModel\Message $resource,
++        ?\Lof\Formbuilder\Model\ResourceModel\Message\Collection $resourceCollection,
+         \Lof\Formbuilder\Helper\Data $_formHelper,
+         array $data = []
+     ) {

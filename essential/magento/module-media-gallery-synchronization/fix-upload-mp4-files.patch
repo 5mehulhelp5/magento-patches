@@ -1,0 +1,11 @@
+diff --git a/Model/CreateAssetFromFile.php b/Model/CreateAssetFromFile.php
+index 6f1d399..c5e5c79 100644
+--- a/Model/CreateAssetFromFile.php
++++ b/Model/CreateAssetFromFile.php
+@@ -84,3 +84,5 @@ class CreateAssetFromFile implements CreateAssetFromFileInterface
+            $file = $this->getFileInfo->execute($absolutePath);
+-            [$width, $height] = getimagesizefromstring($driver->fileGetContents($absolutePath));
++            $imageSize = getimagesizefromstring($driver->fileGetContents($absolutePath));
++            $width = is_array($imageSize) ? $imageSize[0] : 0;
++            $height = is_array($imageSize) ? $imageSize[1] : 0;
+            $meta = [

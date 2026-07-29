@@ -1,0 +1,33 @@
+Removes the white letterbox bars baked into resized Amasty Blog thumbnails.
+
+Problem: Amasty forces the editor to enter a fixed image width/height in the blog
+configuration. When an uploaded image's aspect ratio does not match those dimensions,
+the generated thumbnail is rendered with white bars on the top/bottom (or sides).
+
+Root cause: Helper\Image::resizeImage() calls keepFrame(true) together with
+backgroundColor([255, 255, 255]). keepFrame(true) forces the output image to the exact
+configured width x height frame and pads the leftover space with the background colour,
+so the white bars are physically baked into the cached image file (CSS object-fit cannot
+strip them).
+
+Fix: set keepFrame(false). With keepAspectRatio still active the thumbnail is downscaled
+to fit within the configured box while preserving its real aspect ratio (no padding), so
+the cached file contains only image pixels. Front-end templates can then crop it cleanly
+with object-fit: cover. Downscaling and the resized-image cache are preserved.
+
+diff --git a/Helper/Image.php b/Helper/Image.php
+index b05e570..0295f37 100644
+--- a/Helper/Image.php
++++ b/Helper/Image.php
+@@ -145,7 +145,10 @@ class Image extends AbstractHelper
+         $imageResize->backgroundColor([255, 255, 255]);
+         $imageResize->constrainOnly(true);
+         $imageResize->keepTransparency(true);
+-        $imageResize->keepFrame(true);
++        // BEGIN PATCH
++        // $imageResize->keepFrame(true);
++        $imageResize->keepFrame(false);
++        // END PATCH
+         if ($this->configProvider->isKeepAspectRatio()) {
+             $imageResize->keepAspectRatio(true);
+         }

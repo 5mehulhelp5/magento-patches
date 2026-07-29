@@ -1,0 +1,24 @@
+[RKL-1130] Prevent AbstractType::__destruct() from clearing static attribute caches.
+PHP garbage collector may invoke the destructor of a leftover instance in the middle
+of another import run, wiping self::$attributeCodeToId and self::$commonAttributesCache
+while other instances still rely on them. Subsequent option writes then autovivify
+partial cache entries without the apply_to key, causing
+"Undefined array key 'apply_to'" warnings in _addAttributeParams().
+See https://github.com/magento/magento2/issues/39585 (confirmed by Magento, P4).
+
+diff --git a/Model/Import/Product/Type/AbstractType.php b/Model/Import/Product/Type/AbstractType.php
+--- a/Model/Import/Product/Type/AbstractType.php
++++ b/Model/Import/Product/Type/AbstractType.php
+@@ -720,7 +720,10 @@
+      */
+     public function __destruct()
+     {
+-        self::$attributeCodeToId = [];
+-        self::$commonAttributesCache = [];
++        // BEGIN PATCH [RKL-1130] magento/magento2#39585
++        // GC may run this destructor mid-import and wipe caches still in use.
++        // self::$attributeCodeToId = [];
++        // self::$commonAttributesCache = [];
++        // END PATCH
+     }
+ }

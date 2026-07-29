@@ -1,0 +1,24 @@
+diff a/Console/Command/Generate.php b/Console/Command/Generate.php
+--- a/Console/Command/Generate.php	2026-07-08 14:33:01.169009892 +0200
++++ b/Console/Command/Generate.php	2026-07-08 14:33:01.169009892 +0200
+@@ -83,7 +83,7 @@
+     protected function execute(
+         InputInterface $input,
+         OutputInterface $output
+-    ) {
++    ): int {
+     
+ 
+ 
+diff a/Console/Command/Listing.php b/Console/Command/Listing.php
+--- a/Console/Command/Listing.php	2026-07-08 14:33:01.170009892 +0200
++++ b/Console/Command/Listing.php	2026-07-08 14:33:01.170009892 +0200
+@@ -78,7 +78,7 @@
+     protected function execute(
+         InputInterface $input,
+         OutputInterface $output
+-    ) {
++    ): int {
+     
+ 
+ 

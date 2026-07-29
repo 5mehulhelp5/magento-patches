@@ -1,0 +1,11 @@
+diff --git a/etc/di.xml b/etc/di.xml
+--- a/etc/di.xml	2026-07-12 12:53:40.836006676 +0200
++++ b/etc/di.xml	2026-07-12 12:53:40.844006676 +0200
+@@ -108,7 +108,6 @@
+     <preference for="Lof\Formbuilder\Api\Data\FormbuilderSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+     <preference for="Lof\Formbuilder\Api\Data\FormbuilderMessageInterface" type="Lof\Formbuilder\Model\Message"/>
+     <preference for="Lof\Formbuilder\Api\Data\FormbuilderMessageSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+-    <preference for="Lof\Formbuilder\Api\FormbuilderManagementInterface" type="Lof\Formbuilder\Model\FormbuilderManagement"/>
+     <preference for="Lof\Formbuilder\Api\FormbuilderRepositoryInterface" type="Lof\Formbuilder\Model\FormbuilderRepository"/>
+     <preference for="Lof\Formbuilder\Api\SubmitFormRepositoryInterface" type="Lof\Formbuilder\Model\SubmitFormRepository"/>
+ </config>

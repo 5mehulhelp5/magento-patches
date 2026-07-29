@@ -1,0 +1,18 @@
+diff --git a/Model/Feeds.php b/Model/Feeds.php
+--- a/Model/Feeds.php
++++ b/Model/Feeds.php
+@@ -870,8 +870,12 @@
+             if ($this->_isPreview) {
+                 return $display;
+             } else {
+-                $this->setUpdatedAt($this->coreDate->gmtDate('Y-m-d H:i:s'));
+-                $this->save();
++                $currentDate = $this->coreDate->gmtDate('Y-m-d H:i:s');
++                $this->getResource()->getConnection()->update(
++                    $this->getResource()->getTable('datafeedmanager_feeds'),
++                    ['updated_at' => $currentDate],
++                    ['id = ?' => $this->getId()]
++                );
+                 $finalFile = $this->dfmHelper->getFinalFilename($this->getDateformat(), $this->getName(), $this->getUpdatedAt()) . $this->dfmHelper->getExtFromType($this->getType());
+                 $destination = rtrim((string) $this->getPath(), '/') . '/';
+                 if ($this->params['ftp_enabled']) {

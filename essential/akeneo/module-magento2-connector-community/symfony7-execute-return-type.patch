@@ -1,0 +1,11 @@
+--- a/Console/Command/AkeneoConnectorImportCommand.php
++++ b/Console/Command/AkeneoConnectorImportCommand.php
+@@ -79,7 +79,7 @@
+      *
+      * @throws AlreadyExistsException
+      */
+-    protected function execute(InputInterface $input, OutputInterface $output)
++    protected function execute(InputInterface $input, OutputInterface $output): int
+     {
+         try {
+             $this->appState->setAreaCode(Area::AREA_ADMINHTML);

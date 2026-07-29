@@ -1,0 +1,12 @@
+diff --git a/Ui/Component/Listing/RequestDataProvider.php b/Ui/Component/Listing/RequestDataProvider.php
+--- a/Ui/Component/Listing/RequestDataProvider.php	2026-07-11 16:05:45.202003136 +0200
++++ b/Ui/Component/Listing/RequestDataProvider.php	2026-07-11 16:05:45.209003136 +0200
+@@ -74,7 +74,7 @@
+         array $addFilterStrategies = [],
+         array $meta = [],
+         array $data = [],
+-        PoolInterface $modifiersPool = null
++        ?PoolInterface $modifiersPool = null
+     ) {
+         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
+         $this->collection = $collectionFactory->create();

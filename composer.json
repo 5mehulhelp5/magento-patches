@@ -3497,7 +3497,7 @@
                 {
                     "description": "Fix problem with payment reminder button",
                     "filename": "essential/mollie/magento2/fix-problem-with-payment-reminder-button.patch",
-                    "version-constraint": ">=3.0.0"
+                    "version-constraint": ">=3.0.0,<3.0.2"
                 },
                 {
                     "description": "Fix for double cancelation (lock-based, rebased for Mollie 3.x)",

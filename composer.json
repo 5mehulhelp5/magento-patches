@@ -3321,7 +3321,7 @@
                 {
                     "description": "Add int return type to Command::execute() for symfony/console 7 compatibility (Magento 2.4.9) - rebased for 14.1.x (still not fixed upstream, only code formatting changed)",
                     "filename": "essential/wyomind/datafeedmanager/symfony7-execute-return-type-141plus.patch",
-                    "version-constraint": ">=14.1.0"
+                    "version-constraint": "14.1.0"
                 },
                 {
                     "description": "Fix array to string conversion error",

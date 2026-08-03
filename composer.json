@@ -3909,7 +3909,12 @@
                 {
                     "description": "Fix Apple Sign In scope-aware secret generation to support separate credentials per store view (NKD-6108)",
                     "filename": "essential/plumrocket/module-psloginpro/fix-apple-scope-aware-secret-generation.patch",
-                    "version-constraint": ">=4.7.0"
+                    "version-constraint": ">=4.7.4"
+                },
+                {
+                    "description": "Fix Apple Sign In scope-aware secret generation to support separate credentials per store view (NKD-6108) - variant for 4.7.0-4.7.3, before upstream adopted the scope_id fix in Key.php",
+                    "filename": "essential/plumrocket/module-psloginpro/fix-apple-scope-aware-secret-generation-up-to-473.patch",
+                    "version-constraint": ">=4.7.0,<4.7.4"
                 }
             ],
             "stripe/module-payments": [

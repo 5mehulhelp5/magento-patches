@@ -4302,6 +4302,16 @@
                     "description": "Fix adding to wishlist after login",
                     "filename": "essential/magento/module-wishlist/fix-adding-to-wishlist.patch",
                     "version-constraint": ">=101.2.7"
+                },
+                {
+                    "description": "Fix before_request_params session value not being cleared, causing every add-to-wishlist request after the first one in a session to silently reuse stale product data",
+                    "filename": "essential/magento/module-wishlist/fix-before-request-params-not-cleared.patch",
+                    "version-constraint": ">=101.2.9"
+                },
+                {
+                    "description": "Self-heal customer sessions where before_request_params was already stuck before the previous fix was deployed, by clearing it at the point it is consumed in Add::execute()",
+                    "filename": "essential/magento/module-wishlist/fix-before-request-params-self-heal.patch",
+                    "version-constraint": ">=101.2.9"
                 }
             ],
             "hyva-themes/magento2-cms-tailwind-jit": [

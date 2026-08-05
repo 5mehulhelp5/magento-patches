@@ -1,0 +1,36 @@
+Fixes wishlist add-to-wishlist requests silently being processed with stale
+data for every product except the very first one added after a customer
+logs in.
+
+Root cause: when a guest tries to add a product to the wishlist,
+Magento\Wishlist\Controller\Index\Plugin::beforeDispatch() blocks the
+request and stores its params in the customer session under both
+before_wishlist_request and before_request_params (the latter so
+Wishlist\Controller\Index\Add::execute() can replay the original request
+after login, per the already-applied fix-adding-to-wishlist.patch). After
+the customer logs in, the same beforeDispatch() restores the request from
+before_wishlist_request and clears it with unsBeforeWishlistRequest() -
+but before_request_params is never cleared anywhere in the codebase.
+
+Because Add::execute() prefers before_request_params over the current
+request params whenever it is non-empty, this stale value keeps being used
+for every subsequent add-to-wishlist AJAX call for the rest of the customer
+session, regardless of which product was actually clicked. The affected
+requests return HTTP 200 with no JS errors, which makes the failure look
+like a silent server-side/session issue rather than an obvious bug.
+
+Fix: clear before_request_params together with before_wishlist_request
+once it has been consumed.
+
+diff --git a/Controller/Index/Plugin.php b/Controller/Index/Plugin.php
+index 81d9276..3a4eb10 100644
+--- a/Controller/Index/Plugin.php
++++ b/Controller/Index/Plugin.php
+@@ -133,6 +133,7 @@ class Plugin
+                 $request->clearParams();
+                 $request->setParams($data);
+                 $this->customerSession->unsBeforeWishlistRequest();
++                $this->customerSession->unsBeforeRequestParams();
+             } elseif ($request->getParam('token')) {
+                 // check if the token is valid and retrieve the data
+                 $data = $this->dataSerializer->unserialize($request->getParam('token'));

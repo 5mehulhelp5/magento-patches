@@ -522,7 +522,7 @@
         "magento/module-customer": [
             {
                 "description": "Einhell Magento 2.4.9 - bypass customer default address validation for company-based address ownership",
-                "filename": "vendor/creativestyle/magento-patches/optional/magento/customer/einhell-m249-allow-invalid-default-customer-address.patch",
+                "filename": "vendor/creativestyle/magento-patches/optional/magento/module-customer/einhell-m249-allow-invalid-default-customer-address.patch",
                 "version-constraint": ">=103.0.9 <104.0.0"
             },
             {

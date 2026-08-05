@@ -1,0 +1,33 @@
+Complements fix-before-request-params-not-cleared.patch: makes the fix
+self-healing for customer sessions that were already poisoned before that
+patch was deployed.
+
+Context: before_request_params is stored in the customer session so
+Wishlist\Controller\Index\Add::execute() can replay the original request
+of a guest who got redirected to login while adding a product to the
+wishlist (see the already-applied fix-adding-to-wishlist.patch). It used to
+never be cleared, so once set it silently overrode the real POST data of
+every subsequent add-to-wishlist click for the rest of that session -
+always re-processing the same, stale product. fix-before-request-
+params-not-cleared.patch stops it from being set permanently going
+forward, but a session that was poisoned before that fix was deployed
+never dispatches the code path that clears it again (before_wishlist_request
+is already gone), so it stays stuck until the session ends.
+
+Fix: clear before_request_params in Add::execute() itself, right after it
+is read. This makes it single-use at the point of consumption regardless of
+which code path set it, so an already-poisoned session heals itself after
+one more add-to-wishlist request instead of staying broken indefinitely.
+
+diff --git a/Controller/Index/Add.php b/Controller/Index/Add.php
+index 2f477d0..6dd6c4c 100644
+--- a/Controller/Index/Add.php
++++ b/Controller/Index/Add.php
+@@ -106,6 +106,7 @@ class Add extends \Magento\Wishlist\Controller\AbstractIndex implements HttpPost
+         $data = empty($session->getBeforeRequestParams())
+             ? $this->getRequest()->getParams()
+             : $session->getBeforeRequestParams();
++        $session->unsBeforeRequestParams();
+         // PATCH END
+         if (!$this->formKeyValidator->validate($this->getRequest())) {
+             return $resultRedirect->setPath('*/');

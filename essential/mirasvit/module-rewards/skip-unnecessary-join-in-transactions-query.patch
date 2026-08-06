@@ -1,8 +1,13 @@
+Drops the customer_entity join from every mst_rewards_transaction collection and adds it back only where the grid actually needs it
+Original JIRA ticket: IPET-2843
+IPET-3635: the join moved from _initSelect() into joinCustomerName() instead of being removed outright - the legacy grid behind the transactions CSV/XML export calls joinCustomerName() and then joinCustomerGroup(), which joins ON customer.group_id, so without the customer alias the export query failed with "Unknown column 'customer.group_id' in 'on clause'"
+Coupled with render-expired-points-comment-in-customer-locale.patch: that patch adds its own joinLeft on the same `customer` alias inside Cron::expirePoints(), which only works while _initSelect() does not. Reverting this patch requires adjusting that one in the same change.
+
 diff --git a/src/Rewards/Model/ResourceModel/Transaction/Collection.php b/src/Rewards/Model/ResourceModel/Transaction/Collection.php
 index 936cc73..d855090 100644
 --- a/src/Rewards/Model/ResourceModel/Transaction/Collection.php
 +++ b/src/Rewards/Model/ResourceModel/Transaction/Collection.php
-@@ -158,7 +158,9 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
+@@ -146,7 +146,9 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
      protected function _initSelect()
      {
          parent::_initSelect();
@@ -11,13 +16,27 @@ index 936cc73..d855090 100644
 +        // $this->initFields();
 +        // END PATCH
      }
- 
+
      /**
+@@ -174,6 +176,13 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
+      */
+     public function joinCustomerName()
+     {
++        // BEGIN PATCH
++        // The customer join is no longer added in _initSelect(), so the legacy grid used to build
++        // the CSV/XML export (which also calls joinCustomerGroup(), joining ON customer.group_id)
++        // opts into it here. Only caller: RewardsAdminUi\Block\Adminhtml\Transaction\Grid.
++        $this->initFields();
++        // END PATCH
++
+         return $this;
+     }
+
 diff --git a/src/RewardsAdminUi/Ui/Transaction/Listing/DataProvider.php b/src/RewardsAdminUi/Ui/Transaction/Listing/DataProvider.php
 index fb6cd59..e837672 100644
 --- a/src/RewardsAdminUi/Ui/Transaction/Listing/DataProvider.php
 +++ b/src/RewardsAdminUi/Ui/Transaction/Listing/DataProvider.php
-@@ -150,6 +150,20 @@ class DataProvider extends \Magento\Framework\View\Element\UiComponent\DataProvi
+@@ -151,6 +151,20 @@ class DataProvider extends \Magento\Framework\View\Element\UiComponent\DataProvi
      protected function getPreparedCollection($fieldName, $fieldNameValue, $fieldEmail, $fieldEmailValue)
      {
          $collection = $this->reporting->search($this->getSearchCriteria());

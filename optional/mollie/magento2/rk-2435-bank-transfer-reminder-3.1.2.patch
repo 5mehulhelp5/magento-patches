@@ -1,0 +1,98 @@
+--- a/Cron/RemoveSentPaymentReminders.php
++++ b/Cron/RemoveSentPaymentReminders.php
+@@ -42,7 +42,10 @@
+     protected function deletePaymentReminders(): void
+     {
+         do {
+-            $date = (new DateTimeImmutable($this->dateTime->gmtDate()))->sub(new DateInterval('P1W'));
++            // PATCH BEGIN
++            // $date = (new DateTimeImmutable($this->dateTime->gmtDate()))->sub(new DateInterval('P1W'));
++            $date = (new \DateTimeImmutable($this->dateTime->gmtDate()))->sub(new \DateInterval('P2W'));
++            // PATCH END
+             $this->builder->addFilter(Order::CREATED_AT, $date, 'lt');
+             $this->builder->setPageSize(10);
+ 
+--- a/Model/Adminhtml/Source/SecondChanceEmailDelay.php
++++ b/Model/Adminhtml/Source/SecondChanceEmailDelay.php
+@@ -15,18 +15,55 @@
+     public function toOptionArray(): array
+     {
+         $output = [];
++        // PATCH BEGIN
++        // $output[] = [
++        //    'label' => __('1 hours'),
++        //    'value' => 1,
++        // ];
++        //
++        // for ($i = 2; $i <= 8; $i++) {
++        //    $output[] = [
++        //        'label' => __('%1 hours', $i),
++        //        'value' => $i,
++        //    ];
++        // }
+         $output[] = [
+-            'label' => __('1 hours'),
++            'label' => __('No delay (instant email) - only for testing purposes'),
++            'value' => 0,
++        ];
++
++        $output[] = [
++            'label' => __('1 hour'),
+             'value' => 1,
+         ];
+ 
+-        for ($i = 2; $i <= 8; $i++) {
++        for ($i = 2; $i < 8; $i++) {
+             $output[] = [
+                 'label' => __('%1 hours', $i),
+                 'value' => $i,
+             ];
+         }
+ 
++        for ($i = 8; $i < 24; $i += 4) {
++            $output[] = [
++                'label' => __('%1 hours', $i),
++                'value' => $i,
++            ];
++        }
++
++        $output[] = [
++            'label' => __('1 day'),
++            'value' => 24,
++        ];
++
++        for ($i = 48; $i <= 336; $i += 24) {
++            $output[] = [
++                'label' => __('%1 days', $i / 24),
++                'value' => $i,
++            ];
++        }
++        // PATCH END
++
+         return $output;
+     }
+ }
+--- a/Observer/MollieStartTransaction/SavePendingOrder.php
++++ b/Observer/MollieStartTransaction/SavePendingOrder.php
+@@ -37,12 +37,20 @@
+         /** @var OrderInterface $order */
+         $order = $observer->getData('order');
+ 
++        // PATCH BEGIN
++        //if (
++        //    !$this->config->automaticallySendSecondChanceEmails(storeId($order->getStoreId())) ||
++        //    $this->asyncPaymentMethods->contains($order->getPayment()?->getMethod())
++        //) {
++        //    return;
++        //}
+         if (
+             !$this->config->automaticallySendSecondChanceEmails(storeId($order->getStoreId())) ||
+-            $this->asyncPaymentMethods->contains($order->getPayment()?->getMethod())
++            $order->getPayment()?->getMethod() === \Mollie\Payment\Model\Methods\Paybybank::CODE
+         ) {
+             return;
+         }
++        // PATCH END
+ 
+         try {
+             // If this succeeds there already exists a reminder.

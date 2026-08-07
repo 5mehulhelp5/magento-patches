@@ -1258,9 +1258,9 @@
                     "version-constraint": ">=2.10.18.3, <2.11.19"
                 },
                 {
-                    "description": "Fix CLI class compatibility",
+                    "description": "Fix null category id in virtual category plugins",
                     "filename": "essential/smile/elasticsuite/smile-elasticsuite-virtual-category-null-category-id-fix.patch",
-                    "version-constraint": ">=2.12.0.0"
+                    "version-constraint": ">=2.12.0.0,<2.12.1"
                 },
                 {
                     "description": "Fix null as array key",

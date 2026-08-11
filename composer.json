@@ -2828,7 +2828,7 @@
                 {
                     "description": "Add php-8.4 adjustmnets to the cli commands",
                     "filename": "essential/amzn/amazon-pay-magento-2-module/add-php-8.4-adjustmnets-to-the-cli-commands.patch",
-                    "version-constraint": ">=5.18.4"
+                    "version-constraint": "5.18.4"
                 }
             ],
             "msp/adminrestriction": [

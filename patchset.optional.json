@@ -741,8 +741,8 @@
                 "version-constraint": ">=3.2.15,<=3.3.3"
             },
             {
-                "description": "Remove Programme Liability report - its table is never created because report aggregation is disabled (IPET-3635)",
-                "filename": "vendor/creativestyle/magento-patches/optional/mirasvit/module-rewards/remove-programme-liability-report.patch",
+                "description": "Remove report config that cannot work while reward report aggregation is disabled",
+                "filename": "vendor/creativestyle/magento-patches/optional/mirasvit/module-rewards/remove-report-entries-requiring-aggregation.patch",
                 "version-constraint": ">=3.3.31"
             }
         ],

@@ -1,0 +1,87 @@
+Removes the report config that cannot work while reward report aggregation is disabled
+Original JIRA ticket: IPET-3635
+
+The schema of mst_rewards_points_aggregated_hour and the whole mst_rewards_liability_aggregated_hour table are created by Report\Points::_aggregatePoints() / _aggregateLiability(), reached only through Report\Points::aggregate(). iPet disables that on purpose (DisableAggregate plugin, IPET-2843 - it walks 10 years of history and hammers the DB), so anything the report config declares but the aggregation never created blows up while ReportApi builds that config, on every admin request:
+  Table mst_rewards_liability_aggregated_hour does not exist  (Table::initFields -> describeTable)
+  Field newsletter_signup does not exist in table mst_rewards_points_aggregated_hour  (Map::initColumn -> Column::__construct -> Table::getField)
+
+Unregisters those entries instead of creating the table and columns for them:
+  - the liability table definition, its report pool entry and its admin menu item
+  - the 7 event columns only ever created in Points::recreateTable() and never in any UpgradeSchema: newsletter_signup, birthday, affiliate_create, customer_tier_up, customer_tier_down, pushnotification_signup, referred_customer_signup
+
+The remaining points columns come from UpgradeSchema 104/107/1028/1040/1041/1042, so they exist regardless of the aggregation. Custom behaviour events are already filtered by Mirasvit against the physical table (CustomEventColumns::getSurfaceableColumns). "Activity Over Time" bypasses this config entirely and keeps working.
+
+Left with an open upper version bound on purpose: the next release touching these lines fails the build and forces a re-review.
+
+diff --git a/src/RewardsAdminUi/etc/mst_report.xml b/src/RewardsAdminUi/etc/mst_report.xml
+--- a/src/RewardsAdminUi/etc/mst_report.xml
++++ b/src/RewardsAdminUi/etc/mst_report.xml
+@@ -26,26 +26,5 @@
+         <column name="twitter_tweet" label="Earned for Post on X" type="number"/>
+         <column name="create_rma" label="Earned for RMA" type="number"/>
+         <column name="signup" label="Earned for signup" type="number"/>
+-        <column name="newsletter_signup" label="Earned for newsletter sign up" type="number"/>
+-        <column name="birthday" label="Earned for birthday" type="number"/>
+-        <column name="affiliate_create" label="Earned for joining affiliate program" type="number"/>
+-        <column name="customer_tier_up" label="Earned for tier up" type="number"/>
+-        <column name="customer_tier_down" label="Earned for tier down" type="number"/>
+-        <column name="pushnotification_signup" label="Earned for push notifications sign up" type="number"/>
+-        <column name="referred_customer_signup" label="Earned for referred customer sign up" type="number"/>
+     </table>
+-
+-    <table name="mst_rewards_liability_aggregated_hour">
+-        <fk name="customer_id" table="customer_entity"/>
+-
+-        <column name="period" label="Period" type="date"/>
+-
+-        <column name="store_id" label="Store" type="store"/>
+-        <column name="customer_group_id" label="Customer Groups" type="select" options="Magento\Customer\Model\ResourceModel\Group\Collection"/>
+-
+-        <column name="points_earned" label="Earned" type="number"/>
+-        <column name="points_redeemed" label="Redeemed" type="number"/>
+-        <column name="points_expired" label="Expired" type="number"/>
+-        <column name="balance_delta" label="Outstanding (net)" type="number"/>
+-    </table>
+ </config>
+diff --git a/src/RewardsAdminUi/etc/di.xml b/src/RewardsAdminUi/etc/di.xml
+--- a/src/RewardsAdminUi/etc/di.xml
++++ b/src/RewardsAdminUi/etc/di.xml
+@@ -19,7 +19,6 @@
+         <arguments>
+             <argument name="reports" xsi:type="array">
+                 <item name="rewards_overview" xsi:type="string">Mirasvit\RewardsAdminUi\Reports\Overview</item>
+-                <item name="rewards_liability" xsi:type="string">Mirasvit\RewardsAdminUi\Reports\Liability</item>
+             </argument>
+         </arguments>
+     </type>
+diff --git a/src/RewardsAdminUi/Reports/Overview.php b/src/RewardsAdminUi/Reports/Overview.php
+--- a/src/RewardsAdminUi/Reports/Overview.php
++++ b/src/RewardsAdminUi/Reports/Overview.php
+@@ -89,13 +89,6 @@
+             'mst_rewards_points_aggregated_hour|twitter_tweet__sum',
+             'mst_rewards_points_aggregated_hour|create_rma__sum',
+             'mst_rewards_points_aggregated_hour|signup__sum',
+-            'mst_rewards_points_aggregated_hour|newsletter_signup__sum',
+-            'mst_rewards_points_aggregated_hour|birthday__sum',
+-            'mst_rewards_points_aggregated_hour|affiliate_create__sum',
+-            'mst_rewards_points_aggregated_hour|customer_tier_up__sum',
+-            'mst_rewards_points_aggregated_hour|customer_tier_down__sum',
+-            'mst_rewards_points_aggregated_hour|pushnotification_signup__sum',
+-            'mst_rewards_points_aggregated_hour|referred_customer_signup__sum',
+         ]);
+ 
+         // Surface merchant-configured Custom Behavior Events (pm#319): unlike the
+diff --git a/src/RewardsAdminUi/Block/Adminhtml/Menu.php b/src/RewardsAdminUi/Block/Adminhtml/Menu.php
+--- a/src/RewardsAdminUi/Block/Adminhtml/Menu.php
++++ b/src/RewardsAdminUi/Block/Adminhtml/Menu.php
+@@ -75,10 +75,6 @@
+             'url'      => $this->urlBuilder->getUrl('rewards/report/timeSeries'),
+         ])->addItem([
+             'resource' => 'Mirasvit_Rewards::reward_points_report',
+-            'title'    => __('Programme Liability'),
+-            'url'      => $this->urlBuilder->getUrl('rewards/report/liability'),
+-        ])->addItem([
+-            'resource' => 'Mirasvit_Rewards::reward_points_report',
+             'title'    => __('Refresh Statistics'),
+             'url'      => $this->urlBuilder->getUrl('rewards/report/aggregate'),
+         ]);

@@ -4287,7 +4287,7 @@
                 {
                     "description": "Change ES class namespace to version 8",
                     "filename": "essential/webkul/module-marketplace/change-es-class-namespace.patch",
-                    "version-constraint": ">=5.0.9"
+                    "version-constraint": ">=5.0.9,<5.1.0"
                 }
             ],
             "webkul/eshopsync":  [

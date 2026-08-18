@@ -3543,6 +3543,11 @@
                     "description": "Fix for double cancelation (lock-based, rebased for Mollie 3.x)",
                     "filename": "essential/mollie/magento2/fix-for-double-cancelation-v3.patch",
                     "version-constraint": ">=3.0.0,<4.0.0"
+                },
+                {
+                    "description": "Fix TypeError in abs() on string discount amounts breaking checkout for fixed-price bundles (P2G-2937)",
+                    "filename": "essential/mollie/magento2/fix-mollie-abs-typeerror-on-fixed-price-bundle.patch",
+                    "version-constraint": ">=3.1.1,<=3.1.2"
                 }
             ],
             "magento/module-multiple-wishlist": [

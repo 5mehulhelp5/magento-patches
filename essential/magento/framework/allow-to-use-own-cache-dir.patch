@@ -1,0 +1,18 @@
+Magento 2.4.9 forces to use magento var folder for cache.
+
+diff --git a/App/Cache/Frontend/Factory.php b/App/Cache/Frontend/Factory.php
+index 45e6d58..aa838cc 100644
+--- a/App/Cache/Frontend/Factory.php
++++ b/App/Cache/Frontend/Factory.php
+@@ -489,6 +489,11 @@ class Factory
+         foreach (['backend_options', 'slow_backend_options'] as $section) {
+             if (!empty($options[$section]['cache_dir'])) {
+                 $cacheDir = $options[$section]['cache_dir'];
++                // PATCH START
++                if (str_starts_with($cacheDir, '/dev/shm/')) {
++                    continue;
++                }
++                // PATCH END
+                 if (!isset($this->cachedDirectories[$cacheDir])) {
+                     $directory = $this->_filesystem->getDirectoryWrite(DirectoryList::VAR_DIR);
+                     $directory->create($cacheDir);

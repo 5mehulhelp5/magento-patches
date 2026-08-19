@@ -296,6 +296,11 @@
                     "description": "Fix issue with null as array key",
                     "filename": "essential/magento/framework/fix-issue-with-null-as-array-key.patch",
                     "version-constraint": ">=103.0.9"
+                },
+                {
+                    "description": "Allow to use own cache dir",
+                    "filename": "essential/magento/framework/allow-to-use-own-cache-dir.patch",
+                    "version-constraint": ">=103.0.9"
                 }
             ],
             "magento/module-asynchronous-operations": [

@@ -594,6 +594,11 @@
                     "description": "ACSD-67639: Fix incorrect quantity accumulation when creating credit memo for bundle product with dynamic price calculated on parent",
                     "filename": "essential/magento/module-sales/ACSD-67639_2.4.8.patch",
                     "version-constraint": ">=103.0.8,<103.0.9"
+                },
+                {
+                    "description": "Use flag for update time updated_at grid",
+                    "filename": "essential/magento/module-sales/use-flag-for-update-time-updated-at-grid.patch",
+                    "version-constraint": ">=103.0.8-p5,<103.0.9"
                 }
             ],
             "magento/module-store": [

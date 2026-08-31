@@ -1,0 +1,45 @@
+Register CleverReach services on the abandoned-cart events so the automation observers cannot run against an empty ServiceRegister (ZJ-808).
+
+diff --git a/etc/events.xml b/etc/events.xml
+--- a/etc/events.xml
++++ b/etc/events.xml
+@@ -111,6 +111,8 @@
+ 
+     <!-- event for store created/updated event after -->
+     <event name="store_delete_commit_after">
++        <observer name="service_register"
++                  instance="CleverReach\CleverReachIntegration\Observer\ServiceRegisterObserver"/>
+         <observer name="store_deleted"
+                   instance="CleverReach\CleverReachIntegration\Observer\StoreDeletedObserver"/>
+         <observer name="store_deleted_automation"
+@@ -162,15 +164,21 @@
+ 
+     <!--    AC Events -->
+     <event name="customer_login">
++        <observer name="service_register"
++                  instance="CleverReach\CleverReachIntegration\Observer\ServiceRegisterObserver"/>
+         <observer name="customer_login"
+                   instance="CleverReach\CleverReachIntegration\Observer\Automation\CustomerLoginObserver"/>
+     </event>
+     <event name="sales_quote_save_after">
++        <observer name="service_register"
++                  instance="CleverReach\CleverReachIntegration\Observer\ServiceRegisterObserver"/>
+         <observer name="quota_saved"
+                   instance="CleverReach\CleverReachIntegration\Observer\Automation\QuoteSavedObserver"/>
+     </event>
+ 
+     <event name="sales_quote_delete_after">
++        <observer name="service_register"
++                  instance="CleverReach\CleverReachIntegration\Observer\ServiceRegisterObserver"/>
+         <observer name="quota_deleted"
+                   instance="CleverReach\CleverReachIntegration\Observer\Automation\QuoteDeletedObserver"/>
+     </event>
+@@ -178,6 +186,8 @@
+     <!--    Checkout subscriber event -->
+ 
+     <event name="sales_quote_address_save_after">
++        <observer name="service_register"
++                  instance="CleverReach\CleverReachIntegration\Observer\ServiceRegisterObserver"/>
+         <observer name="quote_address_save"
+                   instance="CleverReach\CleverReachIntegration\Observer\Automation\CheckoutObserver"/>
+     </event>

@@ -2709,6 +2709,11 @@
                     "description": "Fix store save observer to not throw errors on new store save (ZJ-156)",
                     "filename": "essential/clever/magento2/m24-cleverreach-store-save-observer-fix.patch",
                     "version-constraint": ">=3.4.0"
+                },
+                {
+                    "description": "Register CleverReach services on the abandoned-cart events so the automation observers do not throw ServiceNotRegisteredException when no model was loaded first (ZJ-808)",
+                    "filename": "essential/clever/magento2/m24-cleverreach-register-services-for-automation-observers.patch",
+                    "version-constraint": ">=3.4.0"
                 }
             ],
             "magento/module-cms": [

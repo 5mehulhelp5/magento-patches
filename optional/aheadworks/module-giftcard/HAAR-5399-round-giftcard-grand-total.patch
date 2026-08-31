@@ -1,0 +1,18 @@
+diff --git a/Model/Sales/Totals/Quote.php b/Model/Sales/Totals/Quote.php
+index c252c3d..4750c30 100644
+--- a/Model/Sales/Totals/Quote.php
++++ b/Model/Sales/Totals/Quote.php
+@@ -272,6 +272,13 @@ class Quote extends AbstractTotal
+             $grandTotal -= $taxReduction;
+         }
+
++        // BEGIN PATCH
++        $baseTotalGiftcardAmount = round((float)$baseTotalGiftcardAmount, 4);
++        $totalGiftcardAmount = round((float)$totalGiftcardAmount, 4);
++        $baseGrandTotal = round((float)$baseGrandTotal, 4);
++        $grandTotal = round((float)$grandTotal, 4);
++        // END PATCH
++
+         $this
+             ->_addBaseAmount($baseTotalGiftcardAmount)
+             ->_addAmount($totalGiftcardAmount);

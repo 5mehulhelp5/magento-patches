@@ -4285,6 +4285,13 @@
                     "version-constraint": ">=1.3.4"
                 }
             ],
+            "cinovo/order": [
+                {
+                    "description": "CartPlugin::aroundAddProduct throws Magento's own LocalizedException instead of InvalidIntentionSituationException when the order total exceeds the online transaction limit, so Magento's own controller handles it without logging it twice at CRITICAL severity.",
+                    "filename": "essential/cinovo/order/throw-localized-exception-for-order-limit.patch",
+                    "version-constraint": ">=2.7.8"
+                }
+            ],
             "cinovo/preciousmetalattributes": [
                 {
                     "description": "Change backend model of pm_available_for_customer_depot_tax.",

@@ -1,0 +1,81 @@
+diff --git a/Plugin/Model/CartPlugin.php b/Plugin/Model/CartPlugin.php
+index be7d31e..71f543b 100644
+--- a/Plugin/Model/CartPlugin.php
++++ b/Plugin/Model/CartPlugin.php
+@@ -7,7 +7,6 @@
+
+ namespace Cinovo\Order\Plugin\Model;
+
+-use Cinovo\Finance\Exception\InvalidIntentionSituationException;
+ use Cinovo\Finance\Helper\FinanceConfigHelper;
+ use Cinovo\Finance\Logger\Logger as LoggerInterface;
+ use Magento\Catalog\Model\Product;
+@@ -17,6 +16,13 @@ class CartPlugin
+ {
+     public const EXCEED_MESSAGE = "Your order total exceed our limit for online transactions (%1 %2). For more Information please contact us.";
+
++    /**
++     * Checkout session flag read by
++     * Creativestyle\CustomizationProaurumCinovo\Plugin\Magento\Checkout\Controller\Cart\Add\SuppressRedirectOnOrderLimitExceeded
++     * to tell an order-limit ajax failure apart from any other LocalizedException thrown during add-to-cart.
++     */
++    public const AJAX_ORDER_LIMIT_EXCEEDED_FLAG = 'cinovo_order_limit_exceeded_ajax';
++
+     /**
+      * @var FinanceConfigHelper
+      */
+@@ -25,10 +31,6 @@ class CartPlugin
+      * @var LoggerInterface
+      */
+     private $logger;
+-    /**
+-     * @var \Magento\Framework\Message\ManagerInterface
+-     */
+-    private $manager;
+     /**
+      * @var CheckoutSession
+      */
+@@ -47,7 +49,6 @@ class CartPlugin
+      * AddPlugin constructor.
+      * @param LoggerInterface $logger
+      * @param FinanceConfigHelper $financeConfigHelper
+-     * @param \Magento\Framework\Message\ManagerInterface $manager
+      * @param CheckoutSession $session
+      * @param \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory
+      * @param \Magento\Framework\App\RequestInterface $request
+@@ -55,14 +56,12 @@ class CartPlugin
+     public function __construct(
+         LoggerInterface                                      $logger,
+         FinanceConfigHelper                                  $financeConfigHelper,
+-        \Magento\Framework\Message\ManagerInterface          $manager,
+         CheckoutSession                                      $session,
+         \Magento\Framework\Controller\Result\RedirectFactory $redirectFactory,
+         \Magento\Framework\App\RequestInterface              $request
+     ) {
+         $this->financeConfigHelper = $financeConfigHelper;
+         $this->logger = $logger;
+-        $this->manager = $manager;
+         $this->session = $session;
+         $this->redirectFactory = $redirectFactory;
+         $this->request = $request;
+@@ -88,16 +87,13 @@ class CartPlugin
+
+             if ($quote->getBaseGrandTotal() + $price >= $maxOrderValue) {
+                 $this->logger->warning("Order limit exceeded");
+-                $this->manager->addErrorMessage(__(
+-                    self::EXCEED_MESSAGE,
+-                    $maxOrderValue,
+-                    $quote->getBaseCurrencyCode()
+-                ));
++                $exceedMessage = __(self::EXCEED_MESSAGE, $maxOrderValue, $quote->getBaseCurrencyCode());
+
+                 if ($this->request->isAjax()) {
+-                    throw new InvalidIntentionSituationException(self::EXCEED_MESSAGE);
++                    $this->session->setData(self::AJAX_ORDER_LIMIT_EXCEEDED_FLAG, true);
++                    throw new \Magento\Framework\Exception\LocalizedException($exceedMessage);
+                 }
+-                throw new InvalidIntentionSituationException(self::EXCEED_MESSAGE);
++                throw new \Magento\Framework\Exception\LocalizedException($exceedMessage);
+             }
+         }
+

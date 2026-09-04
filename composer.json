@@ -1350,13 +1350,6 @@
                     "version-constraint": ">=100.4.0-p4, <100.4.2"
                 }
             ],
-            "magento/module-catalog-import-export": [
-                {
-                    "description": "Prevent AbstractType destructor from clearing static attribute caches mid-import, magento/magento2#39585 (RKL-1130); fixed upstream in 101.1.9 (Magento 2.4.9)",
-                    "filename": "essential/magento/module-catalog-import-export/prevent-destructor-from-clearing-static-attribute-caches.patch",
-                    "version-constraint": ">=101.1.8, <101.1.9"
-                }
-            ],
             "magento/module-catalog-inventory": [
                 {
                     "description": "Security patch 249-2026-07-001 (Magento 2.4.9): sanitize qty_correction to a finite float and strip it from submitted stock data",
@@ -1827,6 +1820,11 @@
                     "description": "Fix for apply_to error when importing products",
                     "filename": "essential/magento/module-catalog-import-export/fix-for-apply-to-error.patch",
                     "version-constraint": ">=101.1.7-p3, <101.1.8"
+                },
+                {
+                    "description": "Prevent AbstractType destructor from clearing static attribute caches mid-import, magento/magento2#39585 (RKL-1130); fixed upstream in 101.1.9 (Magento 2.4.9)",
+                    "filename": "essential/magento/module-catalog-import-export/prevent-destructor-from-clearing-static-attribute-caches.patch",
+                    "version-constraint": ">=101.1.8, <101.1.9"
                 }
             ],
             "magento/module-offline-shipping": [

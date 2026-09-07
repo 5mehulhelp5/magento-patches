@@ -1447,6 +1447,11 @@
               "description": "Make AfterImportDataObserver methods public",
               "filename": "vendor/creativestyle/magento-patches/optional/magento/module-catalog-url-rewrite/make-after-import-data-observer-methods-public.patch",
               "version-constraint": "*"
+            },
+            {
+                "description": "Reset the store-scoped url_key cache between import bunches so url rewrites keep the url_key of their own store view",
+                "filename": "vendor/creativestyle/magento-patches/optional/magento/module-catalog-url-rewrite/reset-url-key-scope-cache-between-import-bunches.patch",
+                "version-constraint": ">=100.4.8, <100.5.0"
             }
         ],
         "magento/module-grouped-product": [

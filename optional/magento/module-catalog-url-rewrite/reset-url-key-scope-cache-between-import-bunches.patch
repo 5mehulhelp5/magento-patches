@@ -1,0 +1,38 @@
+Fixes product url rewrites receiving the url_key of a different store view during product import.
+
+Symptom: after an import, url_rewrite.request_path for a store view no longer matches that store
+view's own url_key in catalog_product_entity_varchar. Every store view of the product ends up with
+one identical request_path, taken from the default scope value. On a multi-language setup this makes
+a store view serve another language's URL, e.g. a French request_path answering on a German store.
+The url_key values in EAV stay correct, only url_rewrite is wrong, which makes the problem look like
+a data issue when it is not.
+
+Root cause: AfterImportDataObserver::$cachedValues holds the store-scoped url_key values used by
+getReqPath() to correct the request_path of products that were populated from a default-scope import
+row (populateGlobalProduct() puts a single shared product object into the slot of every store view of
+every website the product is assigned to). The property is filled in initializeCacheForProducts()
+only when it is still null, and it is never reset. The observer is a DI singleton and execute() runs
+once per import bunch, so from the second bunch onwards the cache still holds the first bunch's
+products. isset($this->cachedValues[$productId][$storeId]) is then false for every later product and
+getReqPath() falls back to the shared default-scope product's url_key, writing it to all store views.
+
+Fix: reset $this->cachedValues to null at the end of generateUrls(), next to the existing
+$this->productCategories reset, so each bunch recomputes the scope-based url_key values for its own
+products. This is the behaviour the surrounding code already assumes.
+
+Reproduced by the integration test
+vendor/creativestyle/customization-rieker-staging/Test/Integration/UrlRewrite/ImportUrlRewriteScopeTest.php
+which is red without this patch and green with it.
+
+diff --git a/Observer/AfterImportDataObserver.php b/Observer/AfterImportDataObserver.php
+index a2276ce..a9c1dec 100644
+--- a/Observer/AfterImportDataObserver.php
++++ b/Observer/AfterImportDataObserver.php
+@@ -446,6 +446,7 @@ class AfterImportDataObserver implements ObserverInterface
+         }
+         $mergeDataProvider->merge($this->currentUrlRewritesRegenerate($products));
+         $this->productCategories = null;
++        $this->cachedValues = null;
+         return $mergeDataProvider->getData();
+     }
+

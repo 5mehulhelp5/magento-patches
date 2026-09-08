@@ -9,6 +9,23 @@
     },
     "extra": {
         "patchset": {
+            "magento/module-backend": [
+                {
+                    "description": "Security patch VULN-39341 (Magento 2.4.9): validate the grid row URL generator class against GeneratorInterface before instantiating it",
+                    "filename": "essential/magento/module-backend/249-VULN-39341-CE.patch",
+                    "version-constraint": ">=102.0.9,<102.0.10"
+                },
+                {
+                    "description": "Security patch VULN-39341 (Magento 2.4.8-p5): validate the grid row URL generator class against GeneratorInterface before instantiating it",
+                    "filename": "essential/magento/module-backend/248p5-VULN-39341-CE.patch",
+                    "version-constraint": ">=102.0.8,<102.0.9"
+                },
+                {
+                    "description": "Security patch VULN-39341 (Magento 2.4.7-p10): validate the grid row URL generator class against GeneratorInterface before instantiating it",
+                    "filename": "essential/magento/module-backend/247p10-VULN-39341-CE.patch",
+                    "version-constraint": ">=102.0.7,<102.0.8"
+                }
+            ],
             "magento/module-async-config": [
                 {
                     "description": "Security patch 249-2026-07-001 (Magento 2.4.9): restrict async config image handling to genuinely uploaded files and drop untrusted tmp_name values",
@@ -46,6 +63,21 @@
                 }
             ],
             "magento/framework": [
+                {
+                    "description": "Security patch VULN-39341 (Magento 2.4.9): validate the resolved block type against BlockInterface before BlockFactory instantiates it, log rejected blocks instead of failing layout generation, and neutralise PHP code in Web API fatal error reports",
+                    "filename": "essential/magento/framework/249-VULN-39341-CE.patch",
+                    "version-constraint": ">=103.0.9,<103.0.10"
+                },
+                {
+                    "description": "Security patch VULN-39341 (Magento 2.4.8-p5): validate the resolved block type against BlockInterface before BlockFactory instantiates it, log rejected blocks instead of failing layout generation, and neutralise PHP code in Web API fatal error reports",
+                    "filename": "essential/magento/framework/248p5-VULN-39341-CE.patch",
+                    "version-constraint": ">=103.0.8,<103.0.9"
+                },
+                {
+                    "description": "Security patch VULN-39341 (Magento 2.4.7-p10): validate the resolved block type against BlockInterface before BlockFactory instantiates it, log rejected blocks instead of failing layout generation, and neutralise PHP code in Web API fatal error reports",
+                    "filename": "essential/magento/framework/247p10-VULN-39341-CE.patch",
+                    "version-constraint": ">=103.0.7,<103.0.8"
+                },
                 {
                     "description": "Security patch 249-2026-07-001 (Magento 2.4.9): UiComponent Sanitizer template-injection detection now matches across newlines (add /s modifier)",
                     "filename": "essential/magento/framework/249-2026-07-001-CE.patch",
@@ -898,6 +930,21 @@
             ],
             "magento/magento2-base": [
                 {
+                    "description": "Security patch VULN-39341 (Magento 2.4.9): neutralise PHP code in error reports written and read by pub/errors/processor.php",
+                    "filename": "essential/magento/magento2-base/249-VULN-39341-CE.patch",
+                    "version-constraint": ">=2.4.9,<2.4.10"
+                },
+                {
+                    "description": "Security patch VULN-39341 (Magento 2.4.8-p5): neutralise PHP code in error reports written and read by pub/errors/processor.php",
+                    "filename": "essential/magento/magento2-base/248p5-VULN-39341-CE.patch",
+                    "version-constraint": ">=2.4.8,<2.4.9"
+                },
+                {
+                    "description": "Security patch VULN-39341 (Magento 2.4.7-p10): neutralise PHP code in error reports written and read by pub/errors/processor.php",
+                    "filename": "essential/magento/magento2-base/247p10-VULN-39341-CE.patch",
+                    "version-constraint": ">=2.4.7,<2.4.8"
+                },
+                {
                     "description": "Security patch 249-2026-08-001 (Magento 2.4.9), APSB26-92: fix underscore.js CVE-2026-27601 (denial of service via crafted input to _.isEqual)",
                     "filename": "essential/magento/magento2-base/249-2026-08-001-CE.patch",
                     "version-constraint": ">=2.4.9,<2.4.10"
@@ -1068,6 +1115,21 @@
                 }
             ],
             "magento/module-email": [
+                {
+                    "description": "Security patch VULN-39341 (Magento 2.4.9): enforce the Magento_Email::template ACL on the admin template preview and reject non-string template text and styles",
+                    "filename": "essential/magento/module-email/249-VULN-39341-CE.patch",
+                    "version-constraint": ">=101.1.9,<101.1.10"
+                },
+                {
+                    "description": "Security patch VULN-39341 (Magento 2.4.8-p5): enforce the Magento_Email::template ACL on the admin template preview and reject non-string template text and styles",
+                    "filename": "essential/magento/module-email/248p5-VULN-39341-CE.patch",
+                    "version-constraint": ">=101.1.8,<101.1.9"
+                },
+                {
+                    "description": "Security patch VULN-39341 (Magento 2.4.7-p10): enforce the Magento_Email::template ACL on the admin template preview and reject non-string template text and styles",
+                    "filename": "essential/magento/module-email/247p10-VULN-39341-CE.patch",
+                    "version-constraint": ">=101.1.7,<101.1.8"
+                },
                 {
                     "description": "Security patch MDVA-43395 and MDVA-43443",
                     "filename": "essential/magento/module-email/m243plus-security-MDVA-43395-MDVA-43443.patch",
@@ -3121,6 +3183,21 @@
                 }
             ],
             "magento/module-newsletter": [
+                {
+                    "description": "Security patch VULN-39341 (Magento 2.4.9): enforce the Magento_Newsletter::template and Magento_Newsletter::queue ACLs on the admin newsletter previews",
+                    "filename": "essential/magento/module-newsletter/249-VULN-39341-CE.patch",
+                    "version-constraint": ">=100.4.9,<100.4.10"
+                },
+                {
+                    "description": "Security patch VULN-39341 (Magento 2.4.8-p5): enforce the Magento_Newsletter::template and Magento_Newsletter::queue ACLs on the admin newsletter previews",
+                    "filename": "essential/magento/module-newsletter/248p5-VULN-39341-CE.patch",
+                    "version-constraint": ">=100.4.8,<100.4.9"
+                },
+                {
+                    "description": "Security patch VULN-39341 (Magento 2.4.7-p10): enforce the Magento_Newsletter::template and Magento_Newsletter::queue ACLs on the admin newsletter previews",
+                    "filename": "essential/magento/module-newsletter/247p10-VULN-39341-CE.patch",
+                    "version-constraint": ">=100.4.7,<100.4.8"
+                },
                 {
                     "description": "Fix missing paragraph tags in subscription email templates",
                     "filename": "essential/magento/module-newsletter/m23-fix-newsletter-subscription-emails.patch",
